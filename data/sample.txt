@@ -1,0 +1,29 @@
+Byte pair encoding (BPE) is a data compression technique that iteratively replaces the most frequent pairs of bytes in a sequence with a single, unused byte. In modern Natural Language Processing and Large Language Models such as GPT-2, GPT-3, GPT-4, and Llama, BPE is adapted as a subword tokenization algorithm.
+
+Tokenization serves as the bridge between raw Unicode text and numerical vector embeddings. In standard character-level tokenization, vocabularies remain compact, but sequence lengths become excessively long, placing computational strain on the quadratic self-attention layers of Transformer models. Conversely, word-level tokenization struggles with infinite vocabularies, rare morphological variants, and out-of-vocabulary (OOV) tokens.
+
+BPE strikes a balance by maintaining a compact vocabulary while representing arbitrary input strings without loss. The tokenizer begins with a base vocabulary of 256 raw UTF-8 bytes. During training, consecutive pairs with the highest co-occurrence statistics are identified and merged into a new, unique token identifier. 
+
+Pre-tokenization plays a crucial role in preventing undesirable merges across syntactic categories. Using regular expression patterns, strings are segmented into disjoint chunks:
+1. Letters and words: 'hello', 'world', 'Tokenization'
+2. Numbers and arithmetic: 127 + 677 = 804, 3.14159, 10000
+3. Contractions: it's, they've, we're, you'll
+4. Multilingual text: नमस्ते दुनिया, こんにちは世界, Hello World!
+
+Consider this sample Python implementation demonstrating indentation handling:
+
+def fibonacci(n: int) -> int:
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+
+for i in range(10):
+    print(f"Fib({i}) = {fibonacci(i)}")
+
+By preserving whitespace structure and subword morphology, BPE enables language models to process code, prose, and structured data efficiently.
